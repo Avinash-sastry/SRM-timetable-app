@@ -1,0 +1,27 @@
+.subject-creator {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.subject-creator input[type="text"] {
+  padding: 8px;
+  border: 1px solid var(--color-slot-border);
+  border-radius: 4px;
+  background-color: var(--color-bg-main); /* Use main bg */
+  color: var(--color-text-primary); /* Use main text color */
+}
+
+.subject-creator button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--color-button-primary-bg);
+  color: var(--color-button-text);
+  cursor: pointer;
+}
+
+.subject-creator button:hover {
+  background-color: var(--color-button-primary-hover);
+}

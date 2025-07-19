@@ -1,0 +1,16 @@
+.timetable-grid-container {
+  display: grid;
+  /* This is the key: 13 columns total (1 for day labels, 12 for slots) */
+  grid-template-columns: 80px repeat(12, 1fr); 
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.day-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background-color: var(--color-bg-panel);
+  border-radius: 4px;
+}

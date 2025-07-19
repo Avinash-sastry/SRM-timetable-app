@@ -1,0 +1,85 @@
+/* Define our color palette using CSS variables */
+:root {
+  --color-bg-main: #ffffff;
+  --color-bg-panel: #f4f4f4;
+  --color-text-primary: #212529;
+  --color-text-header: #000000;
+  --color-border: #ddd;
+  --color-slot-empty: #eee;
+  --color-slot-border: #ccc;
+  --color-slot-hover: #aaffaa;
+  --color-button-primary-bg: #007bff;
+  --color-button-primary-hover: #0056b3;
+  --color-button-text: #ffffff;
+  --color-toggle-button-bg: #6c757d;
+  --color-toggle-button-hover: #5a6268;
+}
+
+/* Define the colors for our dark theme */
+.dark-mode {
+  --color-bg-main: #1a202c;
+  --color-bg-panel: #2d3748;
+  --color-text-primary: #e2e8f0;
+  --color-text-header: #ffffff;
+  --color-border: #4a5568;
+  --color-slot-empty: #4a5568;
+  --color-slot-border: #718096;
+  --color-slot-hover: #2c5282;
+  --color-button-primary-bg: #3182ce;
+  --color-button-primary-hover: #2b6cb0;
+  --color-button-text: #ffffff;
+  --color-toggle-button-bg: #718096;
+  --color-toggle-button-hover: #4a5568;
+}
+
+/* Now, we use these variables to style our app */
+.app-container {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.controls-panel {
+  width: 300px;
+  padding: 20px;
+  background-color: var(--color-bg-panel);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+
+.controls-panel h2, .controls-panel h3 {
+  color: var(--color-text-header);
+}
+
+/* We renamed this from .timetable-grid to be more specific */
+.timetable-grid-wrapper {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Stack the header and grid vertically */
+}
+
+.timetable-grid-wrapper h1 {
+  color: var(--color-text-header);
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.toggle-dark-mode {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--color-toggle-button-bg);
+  color: var(--color-button-text);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.toggle-dark-mode:hover {
+  background-color: var(--color-toggle-button-hover);
+}
