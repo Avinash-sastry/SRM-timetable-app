@@ -1,17 +1,19 @@
 .subject-item {
+  display: flex;
+  justify-content: center; /* Center the text now that there's no button */
+  align-items: center;
   padding: 10px 15px;
-  border-radius: 20px; /* Makes it pill-shaped */
-  color: #333; /* Dark text for better contrast on light colors */
+  border-radius: 20px;
+  color: #333;
   font-weight: bold;
-  cursor: grab; /* Shows the "grab" hand icon */
+  cursor: grab;
   margin-bottom: 8px;
-  touch-action: none; /* Important for mobile compatibility */
-  user-select: none; /* Prevents text selection while dragging */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  touch-action: none;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* When we are actively dragging an item */
 .subject-item:active {
   cursor: grabbing;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* A more pronounced shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

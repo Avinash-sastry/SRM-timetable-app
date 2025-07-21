@@ -1,12 +1,13 @@
 .timetable-slot {
   border: 1px dashed var(--color-slot-border);
-  min-height: 60px;
+  min-height: 70px; /* Increased height slightly for better fit */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 5px;
   font-weight: bold;
-  color: #333; /* Keep dark text for colored backgrounds */
-  transition: background-color 0.2s ease-in-out;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
 }

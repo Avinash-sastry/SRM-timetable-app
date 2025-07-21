@@ -1,23 +1,22 @@
 import { useDroppable } from '@dnd-kit/core';
+import SubjectItem from './SubjectItem';
 import './TimetableSlot.css';
 
-// This component represents one droppable cell in our grid.
 function TimetableSlot({ slotId, subject }) {
-  // The useDroppable hook makes this component a valid drop zone.
   const { isOver, setNodeRef } = useDroppable({
-    id: slotId, // The unique ID for this droppable area
+    id: slotId,
   });
 
-  // We'll determine the style based on whether a subject is present
-  // or if a draggable item is currently hovering over it.
   const style = {
-    backgroundColor: subject ? subject.color : (isOver ? '#aaffaa' : '#eee'),
+    backgroundColor: subject ? 'transparent' : (isOver ? 'var(--color-slot-hover)' : 'var(--color-slot-empty)'),
+    borderStyle: isOver ? 'solid' : 'dashed',
   };
 
   return (
     <div ref={setNodeRef} className="timetable-slot" style={style}>
-      {/* If a subject is assigned to this slot, display its name */}
-      {subject ? subject.name : ''}
+      {/* If a subject exists, render a SubjectItem INSTANCE.
+          Give it the slotId as its unique draggableId. */}
+      {subject ? <SubjectItem subject={subject} draggableId={slotId} /> : null}
     </div>
   );
 }
