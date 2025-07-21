@@ -4,7 +4,8 @@ import './App.css';
 import SubjectCreator from './components/SubjectCreator';
 import TimetableGrid from './components/TimetableGrid';
 import SubjectItem from './components/SubjectItem';
-import TimeHeader from './components/TimeHeader'; // Import the new component
+import TimeHeader from './components/TimeHeader';
+import TrashCan from './components/TrashCan'; // Import the new component
 
 const initializeGrid = () => {
   const grid = {};
@@ -45,11 +46,30 @@ function App() {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (over) {
+    
+    // Check if the item was dropped over the trash can
+    if (over && over.id === 'trash-can-droppable') {
+      const subjectIdToRemove = active.id;
+      // We need to clear this subject from any slot it's in
+      setGridSlots(prevGrid => {
+        const newGrid = { ...prevGrid };
+        // Loop through all slots and remove the subject
+        for (const slotId in newGrid) {
+          if (newGrid[slotId] === subjectIdToRemove) {
+            newGrid[slotId] = null; // Set the slot to empty
+          }
+        }
+        return newGrid;
+      });
+    } 
+    // This is the original logic for placing an item into a slot
+    else if (over) {
       const subjectId = active.id;
       const slotId = over.id;
       setGridSlots(prev => ({ ...prev, [slotId]: subjectId }));
     }
+
+    // Always reset the active subject after a drag ends
     setActiveSubject(null); 
   };
   
@@ -74,11 +94,12 @@ function App() {
               <SubjectItem key={subject.id} subject={subject} />
             ))}
           </div>
+          {/* Add the trash can component, passing a prop to tell it when a drag is active */}
+          <TrashCan isDragging={activeSubject !== null} />
         </div>
         
-        {/* We renamed the class here for clarity */}
         <div className="timetable-grid-wrapper">
-          <TimeHeader /> {/* Add the new TimeHeader component */}
+          <TimeHeader />
           <h1>My Timetable</h1>
           <TimetableGrid gridSlots={gridSlots} subjects={subjects} />
         </div>

@@ -1,0 +1,26 @@
+.trash-can {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 20px;
+  border: 2px dashed var(--color-slot-border);
+  border-radius: 8px;
+  color: var(--color-slot-border);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Style for when ANY drag operation is active */
+.trash-can.active {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  transform: scale(1.05);
+}
+
+/* Style for when an item is hovering directly OVER the trash can */
+.trash-can.over {
+  background-color: rgba(255, 107, 107, 0.2);
+  border-style: solid;
+}
