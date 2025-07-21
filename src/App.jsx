@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react'; // <-- Import useEffect
 import { DndContext, DragOverlay, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
-// --- Import the icons we need ---
-import { FiSun, FiMoon, FiTrash2 } from 'react-icons/fi';
+import { FiSun, FiMoon, FiTrash2, FiDownload } from 'react-icons/fi';
+import html2canvas from 'html2canvas';
 import './App.css';
 import SubjectCreator from './components/SubjectCreator';
 import TimetableGrid from './components/TimetableGrid';
@@ -9,7 +9,6 @@ import SubjectItem from './components/SubjectItem';
 import TimeHeader from './components/TimeHeader';
 import TrashCan from './components/TrashCan';
 
-// ... (keep the initializeGrid function as is)
 const initializeGrid = () => {
   const grid = {};
   for (let day = 1; day <= 5; day++) {
@@ -20,13 +19,13 @@ const initializeGrid = () => {
   return grid;
 };
 
-
 function App() {
-  // ... (keep all the useState hooks and handler functions as they are)
   const [subjects, setSubjects] = useState([]);
   const [gridSlots, setGridSlots] = useState(initializeGrid());
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeSubject, setActiveSubject] = useState(null);
+  const [isCapturing, setIsCapturing] = useState(false); // <-- NEW: State for capturing mode
+  const timetableRef = useRef(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -49,6 +48,40 @@ function App() {
     }
   };
 
+  // --- UPDATED Download Handler ---
+  // This function now only sets the state to begin the capture process.
+  const handleDownloadImage = () => {
+    setIsCapturing(true);
+  };
+
+  // --- NEW useEffect to handle the actual canvas capture ---
+  // This runs AFTER the component re-renders with isCapturing = true
+  useEffect(() => {
+    if (isCapturing) {
+      const element = timetableRef.current;
+      if (!element) return;
+
+      html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: isDarkMode ? '#1a202c' : '#ffffff',
+      }).then(canvas => {
+        const data = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = 'my-timetable.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // IMPORTANT: Reset the capturing state after we're done.
+        setIsCapturing(false);
+      });
+    }
+  }, [isCapturing, isDarkMode]); // Dependency array ensures this runs when isCapturing changes
+
+
+  // ... (Keep handleDragStart and handleDragEnd exactly as they were)
   const handleDragStart = (event) => {
     const subject = event.active.data.current?.subject;
     if (subject) {
@@ -96,27 +129,28 @@ function App() {
   };
 
 
-  const appContainerClass = `app-container ${isDarkMode ? 'dark-mode' : ''}`;
+  // --- UPDATED: Add the 'is-capturing' class dynamically ---
+  const appContainerClass = `app-container ${isDarkMode ? 'dark-mode' : ''} ${isCapturing ? 'is-capturing' : ''}`;
 
   return (
     <DndContext
+      // ... (DndContext props remain the same)
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      {/* We pass the new dynamic class here */}
       <div className={appContainerClass}>
+        {/* ... (The rest of the JSX structure remains exactly the same) ... */}
         <div className="controls-panel">
-          {/* --- UPDATED BUTTONS WITH ICONS --- */}
           <button onClick={toggleDarkMode} className="toggle-dark-mode icon-button">
             {isDarkMode ? <FiSun /> : <FiMoon />}
             <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
-          
           <button onClick={handleClearGrid} className="clear-grid-btn icon-button">
             <FiTrash2 />
             <span>Clear Grid</span>
           </button>
-
           <h2>My Subjects</h2>
           <SubjectCreator onAddSubject={handleAddSubject} />
           <div className="subject-list">
@@ -130,12 +164,20 @@ function App() {
           </div>
           <TrashCan isDragging={activeSubject !== null} />
         </div>
-        <div className="timetable-grid-wrapper">
+        
+        <div className="timetable-grid-wrapper" ref={timetableRef}>
           <TimeHeader />
-          <h1>My Timetable</h1>
+          <div className="timetable-header-toolbar">
+            <h1>My Timetable</h1>
+            <button onClick={handleDownloadImage} className="download-btn icon-button">
+              <FiDownload />
+              <span>Save as Image</span>
+            </button>
+          </div>
           <TimetableGrid gridSlots={gridSlots} subjects={subjects} />
         </div>
       </div>
+      
       <DragOverlay>
         {activeSubject ? <SubjectItem subject={activeSubject} /> : null}
       </DragOverlay>
