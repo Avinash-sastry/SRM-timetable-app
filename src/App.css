@@ -36,7 +36,7 @@
 .app-container {
   display: flex;
   height: 100vh;
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--color-bg-main);
   color: var(--color-text-primary);
   transition: background-color 0.3s, color 0.3s;
@@ -83,3 +83,34 @@
 .toggle-dark-mode:hover {
   background-color: var(--color-toggle-button-hover);
 }
+
+
+.clear-grid-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #dc3545; /* Red border */
+  border-radius: 4px;
+  background-color: transparent; /* Transparent background */
+  color: #dc3545; /* Red text */
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.clear-grid-btn:hover {
+  background-color: #dc3545; /* Red background on hover */
+  color: white; /* White text on hover */
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+}
+
+.icon-button svg {
+  font-size: 1.1em; /* Make icon slightly bigger than text */
+}
+
